@@ -1,6 +1,6 @@
 package too.fries.com.chatapp_socketio;
 
-import android.support.v7.app.AppCompatActivity;
+import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -20,7 +20,7 @@ import java.net.URISyntaxException;
 import too.fries.com.chatapp_socketio.adapters.ChatAdapter;
 import too.fries.com.chatapp_socketio.models.ItemChat;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
 
     private Socket mSocket;
     {
@@ -44,6 +44,14 @@ public class MainActivity extends AppCompatActivity {
         mSocket.emit("add user", USERNAME);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        mSocket.off("new message");
+        mSocket.off("login");
+        mSocket.disconnect();
+    }
 
     private Button btnSend;
     private EditText edtMsg;
